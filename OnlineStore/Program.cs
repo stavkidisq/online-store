@@ -1,7 +1,13 @@
+using OnlineStore.Infrastructure;
+using OnlineStore.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<OnlineStoreDbContext>
+    (options => options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineStoreDbContext")));
 
 var app = builder.Build();
 
@@ -20,8 +26,27 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "areas",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+});
 
+using(var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    try
+    {
+        SeedDataModel.Initialize(services);
+    }
+    catch (Exception)
+    {
+        throw;
+    }
+}
 app.Run();
