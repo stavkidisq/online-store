@@ -1,0 +1,51 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "provider": "cdnjs",
+      "library": "ckeditor@4.18.0",
+      "destination": "wwwroot/lib/ckeditor/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "ckeditor@4.18.0",
+      "destination": "wwwroot/lib/ckeditor/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "ckeditor@4.18.0",
+      "destination": "wwwroot/lib/ckeditor/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "ckeditor@4.18.0",
+      "destination": "wwwroot/lib/ckeditor/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "ckeditor@4.18.0",
+      "destination": "wwwroot/lib/ckeditor/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "ckeditor@4.18.0",
+      "destination": "wwwroot/lib/ckeditor/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "ckeditor@4.18.0",
+      "destination": "wwwroot/lib/ckeditor/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "ckeditor@4.18.0",
+      "destination": "wwwroot/lib/ckeditor/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "ckeditor@4.18.0",
+      "destination": "wwwroot/lib/ckeditor/"
+    }
+  ]
+}
