@@ -16,3 +16,13 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/*my own styles*/
+
+table.sorting tr:not(.home) {
+    cursor: pointer;
+}
+
+.ui-state-highlight {
+    border: 1px dashed #ccc;
+}
