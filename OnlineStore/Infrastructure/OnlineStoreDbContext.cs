@@ -6,6 +6,7 @@ namespace OnlineStore.Infrastructure
     public class OnlineStoreDbContext : DbContext
     {
         public DbSet<PageModel> Pages { get; set; }
+        public DbSet<CategoryModel> Categories { get; set; }
         public OnlineStoreDbContext
             (DbContextOptions<OnlineStoreDbContext> options) : base(options)
         {

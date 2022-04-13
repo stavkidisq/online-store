@@ -137,5 +137,26 @@ namespace OnlineStore.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        //POST: /admin/pages/reorder
+        [HttpPost]
+        public async Task<IActionResult> Reorder(int[] id)
+        {
+            int count = 1;
+
+            foreach(var pageId in id)
+            {
+                PageModel? page = await _context.Pages.FindAsync(pageId);
+                if(page != null)
+                {
+                    page.Sorting = count;
+                    _context.Update(page);
+                    await _context.SaveChangesAsync();
+                    count++;
+                }
+            }
+
+            return Ok();
+        }
+
     }
 }
