@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OnlineStore.Infrastructure;
 
 namespace OnlineStore.Areas.Admin.Controllers
@@ -12,9 +13,9 @@ namespace OnlineStore.Areas.Admin.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return View(await _context.Categories.OrderBy(category => category.Sorting).ToListAsync());
         }
     }
 }
