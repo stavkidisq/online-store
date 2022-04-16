@@ -75,7 +75,7 @@ namespace OnlineStore.Areas.Admin.Controllers
         //GET: /admin/pages/edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var pages = await _context.FindAsync<PageModel>(id);
+            var pages = await _context.Pages.FindAsync(id);
 
             if (pages == null)
                 return NotFound();
@@ -90,8 +90,14 @@ namespace OnlineStore.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                pageModel.Slug = pageModel.Id == 1 ? "home" 
-                    : pageModel.Title.ToLower().Replace(" ", "-");
+                if(pageModel.Id == 1)
+                {
+                    pageModel.Slug = "home";
+                }
+                else
+                {
+                    pageModel.Slug = pageModel.Title.ToLower().Replace(" ", "-");
+                }
 
                 var p = await _context.Pages
                     .Where(page => page.Id != pageModel.Id)
