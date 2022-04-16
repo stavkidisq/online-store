@@ -57,5 +57,49 @@ namespace OnlineStore.Areas.Admin.Controllers
 
             return View(categoryModel);
         }
+
+        //GET: /admin/categories/edit/5
+        public async Task<IActionResult> Edit(int id)
+        {
+            var category = await _context.Categories.FindAsync(id);
+
+            if (category == null)
+                return NotFound();
+
+            return View(category);
+        }
+        //POST: /admin/categories/edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(CategoryModel categoryModel)
+        {
+            if (ModelState.IsValid)
+            {
+                categoryModel.Slug = categoryModel.Name.ToLower().Replace(" ", "-");
+
+                var existCategory = await _context.Categories
+                    .Where(page => page.Id != categoryModel.Id)
+                    .FirstOrDefaultAsync(x => x.Slug == categoryModel.Slug);
+
+                if (existCategory != null)
+                {
+                    ModelState.AddModelError("", "The category already exists");
+
+                    return View(categoryModel);
+                }
+                else
+                {
+                    _context.Categories.Update(categoryModel);
+                    await _context.SaveChangesAsync();
+
+                    TempData["Success"] = "The category has been edited!";
+
+                    return RedirectToAction("Edit", new { Id = categoryModel.Id });
+                }
+            }
+
+            return View(categoryModel);
+        }
+
     }
 }
