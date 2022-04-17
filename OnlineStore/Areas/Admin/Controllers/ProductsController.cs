@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Infrastructure;
 
@@ -21,6 +22,14 @@ namespace OnlineStore.Areas.Admin.Controllers
                 .OrderByDescending(product => product.Id)
                 .Include(product => product.Category)
                 .ToListAsync());
+        }
+
+        //GET: admin/products/create
+        public IActionResult Create()
+        {
+            ViewBag.CategoryId = 
+                new SelectList(_context.Categories.OrderBy(category => category.Sorting), "Id", "Name");
+            return View();
         }
     }
 }

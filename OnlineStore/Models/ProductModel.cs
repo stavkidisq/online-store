@@ -20,5 +20,8 @@ namespace OnlineStore.Models
 
         [ForeignKey("CategoryId")]
         public virtual CategoryModel Category { get; set; } = null!;
+
+        [NotMapped]
+        public IFormFile ImageUpload { get; set; } = null!;
     }
 }
