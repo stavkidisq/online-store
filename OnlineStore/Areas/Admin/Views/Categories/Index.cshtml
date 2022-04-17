@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table sorting" id="categories">
     <thead>
         <tr>
             <th>
@@ -23,7 +23,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr id="id_@item.Id">
             <td>
                 @item.Name
             </td>
@@ -38,3 +38,17 @@
 }
     </tbody>
 </table>
+
+@section Scripts{
+    <script>
+        $("table#categories tbody").sortable({
+            items: "tr",
+            placeholder: "ui-state-highlight",
+            update: function() {
+                let ids = $("table#categories tbody").sortable("serialize");
+                let url = "/admin/categories/reorder";
+                $.post(url, ids, function() {});
+            }
+        });
+    </script>
+}

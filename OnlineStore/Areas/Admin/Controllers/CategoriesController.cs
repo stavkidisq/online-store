@@ -101,7 +101,7 @@ namespace OnlineStore.Areas.Admin.Controllers
             return View(categoryModel);
         }
 
-        //GET: /admin/pages/edit/5
+        //GET: /admin/categories/edit/5
         public async Task<IActionResult> Delete(int id)
         {
             var category = await _context.Categories.FindAsync(id);
@@ -119,6 +119,27 @@ namespace OnlineStore.Areas.Admin.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        //POST: /admin/categories/reorder
+        [HttpPost]
+        public async Task<IActionResult> Reorder(int[] id)
+        {
+            int count = 1;
+
+            foreach (var categoryId in id)
+            {
+                CategoryModel? category = await _context.Categories.FindAsync(categoryId);
+                if (category != null)
+                {
+                    category.Sorting = count;
+                    _context.Categories.Update(category);
+                    await _context.SaveChangesAsync();
+                    count++;
+                }
+            }
+
+            return Ok();
         }
 
     }

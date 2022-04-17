@@ -27,6 +27,10 @@ table.sorting tr:not(.home) {
     border: 1px dashed #ccc;
 }
 
-a:hover{
+a:hover {
     opacity: .5 !important;
+}
+
+tr:hover {
+    background-color: #EEEEEE;
 }
