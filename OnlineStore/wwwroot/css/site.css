@@ -28,5 +28,5 @@ table.sorting tr:not(.home) {
 }
 
 a:hover{
-    opacity: .3 !important;
+    opacity: .5 !important;
 }

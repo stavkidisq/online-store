@@ -101,5 +101,25 @@ namespace OnlineStore.Areas.Admin.Controllers
             return View(categoryModel);
         }
 
+        //GET: /admin/pages/edit/5
+        public async Task<IActionResult> Delete(int id)
+        {
+            var category = await _context.Categories.FindAsync(id);
+
+            if (category == null)
+            {
+                TempData["Error"] = "The category does not exist!";
+            }
+            else
+            {
+                _context.Categories.Remove(category);
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = "The category has been removed!";
+            }
+
+            return RedirectToAction("Index");
+        }
+
     }
 }
