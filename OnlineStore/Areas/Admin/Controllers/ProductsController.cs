@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OnlineStore.Infrastructure;
 
 namespace OnlineStore.Areas.Admin.Controllers
@@ -13,9 +14,13 @@ namespace OnlineStore.Areas.Admin.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        //GET: admin/products
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return View(await _context.Products
+                .OrderByDescending(product => product.Id)
+                .Include(product => product.Category)
+                .ToListAsync());
         }
     }
 }
