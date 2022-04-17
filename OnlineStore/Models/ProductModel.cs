@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OnlineStore.Infrastructure;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OnlineStore.Models
@@ -18,6 +19,7 @@ namespace OnlineStore.Models
 
         [Range(1, int.MaxValue, ErrorMessage = "You must choose a category")]
         public int CategoryId { get; set; }
+        [FileExtension]
         public string Image { get; set; } = null!;
 
         [ForeignKey("CategoryId")]
