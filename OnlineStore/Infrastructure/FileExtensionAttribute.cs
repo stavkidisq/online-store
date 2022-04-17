@@ -14,7 +14,7 @@ namespace OnlineStore.Infrastructure
 
                 string[] extensions = { "png", "jpg" };
 
-                bool isValid = extensions.Any(e => e.EndsWith(extension));
+                bool isValid = extensions.Any(e => extension.EndsWith(e));
 
                 if(!isValid)
                 {

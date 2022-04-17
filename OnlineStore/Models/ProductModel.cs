@@ -19,13 +19,13 @@ namespace OnlineStore.Models
 
         [Range(1, int.MaxValue, ErrorMessage = "You must choose a category")]
         public int CategoryId { get; set; }
-        [FileExtension]
-        public string Image { get; set; } = null!;
+        public string? Image { get; set; }
 
         [ForeignKey("CategoryId")]
-        public virtual CategoryModel Category { get; set; } = null!;
+        public virtual CategoryModel? Category { get; set; }
 
         [NotMapped]
-        public IFormFile ImageUpload { get; set; } = null!;
+        [FileExtension]
+        public IFormFile? ImageUpload { get; set; }
     }
 }
