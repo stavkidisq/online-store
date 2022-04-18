@@ -19,12 +19,18 @@ namespace OnlineStore.Areas.Admin.Controllers
         }
 
         //GET: admin/products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int productPage = 1)
         {
-            return View(await _context.Products
+            int pageSize = 6;
+
+            return View(
+                await _context.Products
                 .OrderByDescending(product => product.Id)
                 .Include(product => product.Category)
-                .ToListAsync());
+                .Skip((productPage - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync()
+                );
         }
 
         //GET: admin/products/create
