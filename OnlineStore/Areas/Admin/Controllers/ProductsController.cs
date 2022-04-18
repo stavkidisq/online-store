@@ -23,6 +23,10 @@ namespace OnlineStore.Areas.Admin.Controllers
         {
             int pageSize = 6;
 
+            ViewBag.ProductPageNumber = productPage;
+            ViewBag.ProductPage = pageSize;
+            ViewBag.ProductPageCount = (int)Math.Ceiling((decimal)_context.Products.Count() / pageSize);
+
             return View(
                 await _context.Products
                 .OrderByDescending(product => product.Id)
