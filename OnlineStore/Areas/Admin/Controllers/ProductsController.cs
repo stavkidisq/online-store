@@ -94,5 +94,18 @@ namespace OnlineStore.Areas.Admin.Controllers
 
             return View(productModel);
         }
+
+        //GET: /admin/products/details/5
+        public async Task<IActionResult> Details(int id)
+        {
+            var product = await _context.Products
+                .Include(product => product.Category)
+                .FirstOrDefaultAsync(product => product.Id == id);
+
+            if (product == null)
+                return NotFound();
+
+            return View(product);
+        }
     }
 }
