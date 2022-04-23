@@ -1,0 +1,83 @@
+﻿@model OnlineStore.Models.ProductModel
+
+@{
+    ViewData["Title"] = "Edit product";
+}
+
+<h1>Edit product</h1>
+
+<div class="row">
+    <div class="col-md-10">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Image"/>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" asp-items="@ViewBag.CategoryId" class="form-control">
+                    <option value="0">Choose a category</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div><br />
+
+            <div class="form-group">
+                <label asp-for="Image" class="control-label">Current image</label>
+                <img src="~/media/products/@Model.Image" width="200" alt=""/>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Image" class="control-label">New image</label>
+                <input asp-for="ImageUpload" class="form-control" />
+                <img src="" id="img-upload" class="pt-2" alt=""/>
+                <span asp-validation-for="ImageUpload" class="text-danger"></span>
+            </div><br />
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $.validator.methods.range = function (value, element, param) 
+        {
+            var globalizedValue = value.replace(",", ".");
+            return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+        }
+ 
+        $.validator.methods.number = function (value, element) {
+            return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+        }
+    </script>
+    <script>
+        CKEDITOR.replace("Description");
+
+        $("#ImageUpload").change(function() {
+            readURL(this);
+        });
+    </script>
+}

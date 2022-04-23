@@ -1,4 +1,5 @@
 ﻿using OnlineStore.Infrastructure;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -22,7 +23,7 @@ namespace OnlineStore.Models
         public string? Image { get; set; }
 
         [ForeignKey("CategoryId")]
-        public virtual CategoryModel Category { get; set; } = null!;
+        public virtual CategoryModel? Category { get; set; }
 
         [NotMapped]
         [FileExtension]

@@ -107,5 +107,80 @@ namespace OnlineStore.Areas.Admin.Controllers
 
             return View(product);
         }
+
+        //GET: /admin/products/edit/5
+        public async Task<IActionResult> Edit(int id)
+        {
+            var product = await _context.FindAsync<ProductModel>(id);
+
+            if (product == null)
+                return NotFound();
+
+            ViewBag.CategoryId =
+                new SelectList(_context.Categories
+                .OrderBy(category => category.Sorting), "Id", "Name", product.CategoryId);
+
+            return View(product);
+        }
+
+        //POST: /admin/products/edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, ProductModel productModel)
+        {
+            ViewBag.CategoryId =
+                new SelectList(_context.Categories
+                .OrderBy(category => category.Sorting), "Id", "Name", productModel.CategoryId);
+
+            if (ModelState.IsValid)
+            {
+                productModel.Slug = productModel.Name.ToLower().Replace(" ", "-");
+
+                var p = await _context.Products
+                    .Where(item => item.Id != id)
+                    .FirstOrDefaultAsync(item => item.Slug == productModel.Slug);
+
+                if (p != null)
+                {
+                    ModelState.AddModelError("", "The product already exists");
+
+                    return View(productModel);
+                }
+                else
+                {
+                    if (productModel.ImageUpload != null)
+                    {
+                        var uploadDir = Path.Combine(_environment.WebRootPath, "media/products");
+
+                        if(productModel.Image != "no-image-available.jpg" && productModel.Image != null)
+                        {
+                            var oldImagePath = Path.Combine(uploadDir, productModel.Image);
+
+                            if (System.IO.File.Exists(oldImagePath))
+                                System.IO.File.Delete(oldImagePath);
+                        }
+
+                        string imageName = Guid.NewGuid().ToString() + "_" + productModel.ImageUpload.FileName;
+                        var filePath = Path.Combine(uploadDir, imageName);
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await productModel.ImageUpload.CopyToAsync(fileStream);
+                        }
+
+                        productModel.Image = imageName;
+                    }
+
+                    _context.Products.Update(productModel);
+                    await _context.SaveChangesAsync();
+
+                    TempData["Success"] = "The product has been changed!";
+
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return View(productModel);
+        }
     }
 }
