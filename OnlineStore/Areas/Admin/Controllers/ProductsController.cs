@@ -182,5 +182,35 @@ namespace OnlineStore.Areas.Admin.Controllers
 
             return View(productModel);
         }
+
+        //GET: /admin/products/edit/5
+        public async Task<IActionResult> Delete(int id)
+        {
+            var product = await _context.Products.FindAsync(id);
+
+            if (product == null)
+            {
+                TempData["Error"] = "The product does not exist!";
+            }
+            else
+            {
+                var uploadDir = Path.Combine(_environment.WebRootPath, "media/products");
+
+                if (product.Image != "no-image-available.jpg" && product.Image != null)
+                {
+                    var oldImagePath = Path.Combine(uploadDir, product.Image);
+
+                    if (System.IO.File.Exists(oldImagePath))
+                        System.IO.File.Delete(oldImagePath);
+                }
+
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = "The product has been removed!";
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }
