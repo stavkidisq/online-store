@@ -123,7 +123,7 @@ namespace OnlineStore.Areas.Admin.Controllers
             return View(pageModel);
         }
 
-        //GET: /admin/pages/edit/5
+        //GET: /admin/pages/delete/5
         public async Task<IActionResult> Delete(int id)
         {
             var page = await _context.FindAsync<PageModel>(id);

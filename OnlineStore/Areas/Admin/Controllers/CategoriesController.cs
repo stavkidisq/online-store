@@ -101,7 +101,7 @@ namespace OnlineStore.Areas.Admin.Controllers
             return View(categoryModel);
         }
 
-        //GET: /admin/categories/edit/5
+        //GET: /admin/categories/delete/5
         public async Task<IActionResult> Delete(int id)
         {
             var category = await _context.Categories.FindAsync(id);

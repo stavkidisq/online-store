@@ -183,7 +183,7 @@ namespace OnlineStore.Areas.Admin.Controllers
             return View(productModel);
         }
 
-        //GET: /admin/products/edit/5
+        //GET: /admin/products/delete/5
         public async Task<IActionResult> Delete(int id)
         {
             var product = await _context.Products.FindAsync(id);
