@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Infrastructure;
+using OnlineStore.Models;
 
 namespace OnlineStore.Controllers
 {
@@ -29,6 +30,33 @@ namespace OnlineStore.Controllers
                 .Take(pageSize)
                 .ToListAsync()
                 );
+        }
+
+        //GET: /products/category
+        public async Task<IActionResult> ProductsByCategory(string categorySlug, int productPage = 1)
+        {
+            CategoryModel? categoryBySlug = await _context.Categories
+                                            .Where(category => category.Slug == categorySlug)
+                                            .FirstOrDefaultAsync();
+
+            if(categoryBySlug == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var productsByCategoryId = _context.Products.Where(product => product.CategoryId == categoryBySlug.Id);
+
+            int pageSize = 6;
+
+            ViewBag.ProductPageNumber = productPage;
+            ViewBag.ProductPage = pageSize;
+            ViewBag.CategoryName = categoryBySlug.Name;
+
+            ViewBag.ProductPageCount = (int)Math.Ceiling((decimal)productsByCategoryId.Count() / pageSize);
+
+            return View(await productsByCategoryId.Skip((productPage - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToListAsync());
         }
     }
 }
