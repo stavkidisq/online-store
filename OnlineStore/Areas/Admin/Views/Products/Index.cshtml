@@ -37,7 +37,7 @@
                 @item.Price.ToString("C2")
             </td>
             <td>
-                @item.Category.Name
+                @item.Category?.Name
             </td>
             <td>
                 <img src="~/media/products/@item.Image" width="200" alt=""/>

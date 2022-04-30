@@ -23,4 +23,7 @@
         </div>
     }
 </div>
+<div class="d-flex w-100 justify-content-center">
+    <Pagination page-count="@ViewBag.ProductPageCount" page-target="/products/@ViewBag.CategorySlug" page-number="@ViewBag.ProductPageNumber" page-range="@ViewBag.ProductPage"></Pagination>
+</div>
 

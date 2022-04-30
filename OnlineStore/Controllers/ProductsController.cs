@@ -15,6 +15,7 @@ namespace OnlineStore.Controllers
         }
 
         //GET: /products
+        [Route("products/")]
         public async Task<IActionResult> Index(int productPage = 1)
         {
             int pageSize = 6;
@@ -51,6 +52,7 @@ namespace OnlineStore.Controllers
             ViewBag.ProductPageNumber = productPage;
             ViewBag.ProductPage = pageSize;
             ViewBag.CategoryName = categoryBySlug.Name;
+            ViewBag.CategorySlug = categorySlug;
 
             ViewBag.ProductPageCount = (int)Math.Ceiling((decimal)productsByCategoryId.Count() / pageSize);
 
