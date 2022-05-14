@@ -13,6 +13,7 @@ namespace OnlineStore.Controllers
         {
             _context = context;
         }
+
         //GET: /
         //GET: /slug
         public async Task<IActionResult> Page(string slug)
