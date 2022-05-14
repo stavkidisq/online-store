@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Infrastructure;
+using OnlineStore.Models;
 
 namespace OnlineStore.Controllers
 {
@@ -12,9 +13,19 @@ namespace OnlineStore.Controllers
             _context = context;
         }
 
+        //GET: /cart
         public IActionResult Index()
         {
-            return View();
+            List<CartItemModel> cartItemModelList =
+                HttpContext.Session.GetJson<List<CartItemModel>>("Cart") ?? new();
+
+            CartViewModel cartViewModel = new CartViewModel
+            {
+                CartItems = cartItemModelList,
+                GrandTotal = cartItemModelList.Sum(cart => cart.Price * cart.Quantity)
+            };
+
+            return View(cartViewModel);
         }
     }
 }

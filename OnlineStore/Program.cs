@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddMemoryCache();
+builder.Services.AddSession();
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<OnlineStoreDbContext>
     (options => options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineStoreDbContext")));
@@ -23,6 +26,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 
