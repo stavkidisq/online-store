@@ -11,6 +11,8 @@
             Image = productModel.Image;
         }
 
+        public CartItemModel() { }
+
         public int ProductId { get; set; }
         public string ProductName { get; set; } = null!;
         public int Quantity { get; set; }

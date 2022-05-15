@@ -13,7 +13,8 @@ namespace OnlineStore.Controllers
             _context = context;
         }
 
-        //GET: /cart
+        //GET: /cart/index
+        [Route("Index")]
         public IActionResult Index()
         {
             List<CartItemModel> cartItemModelList =
@@ -26,6 +27,33 @@ namespace OnlineStore.Controllers
             };
 
             return View(cartViewModel);
+        }
+
+        //GET: /cart/add/5
+        public async Task<IActionResult> Add(int id)
+        {
+            ProductModel? productModel = await _context.Products.FindAsync(id);
+
+            if (productModel == null)
+                throw new NullReferenceException("product can not be null!");
+
+            List<CartItemModel> cartItemModelList =
+                HttpContext.Session.GetJson<List<CartItemModel>>("Cart") ?? new();
+
+            CartItemModel? cartItemModel = cartItemModelList.Where(cart => cart.ProductId == id).FirstOrDefault();
+
+            if(cartItemModel == null)
+            {
+                cartItemModelList.Add(new CartItemModel(productModel));
+            }
+            else
+            {
+                cartItemModel.Quantity++;
+            }
+
+            HttpContext.Session.SetJson("Cart", cartItemModelList);
+
+            return RedirectToAction("Index");
         }
     }
 }
