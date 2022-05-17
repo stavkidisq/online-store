@@ -55,5 +55,35 @@ namespace OnlineStore.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public IActionResult Decrease(int id)
+        {
+            List<CartItemModel>? cartItemModelList =
+                HttpContext.Session.GetJson<List<CartItemModel>>("Cart");
+
+            if (cartItemModelList == null)
+                throw new NullReferenceException("cartItemModelList can not be null!");
+
+            CartItemModel? cartItemModel = cartItemModelList.Where(cart => cart.ProductId == id).FirstOrDefault();
+
+            if (cartItemModel == null)
+                throw new NullReferenceException("cartItemModel can not be null!");
+
+            if(cartItemModel.Quantity > 1)
+            {
+                --cartItemModel.Quantity;
+            }
+            else
+            {
+                cartItemModelList.Remove(cartItemModel);
+            }
+
+            HttpContext.Session.SetJson("Cart", cartItemModelList);
+
+            if (cartItemModelList.Count == 0)
+                HttpContext.Session.Remove("Cart");
+
+            return RedirectToAction("Index");
+        }
     }
 }

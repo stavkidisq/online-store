@@ -22,9 +22,9 @@
                 <td>@cartItem.ProductName</td>
                 <td>@cartItem.Quantity</td>
                 <td>
-                    <a asp-action="Add" asp-rout-id="@cartItem.ProductId" class="btn btn-sm btn-primary">+</a>
-                    <a asp-action="Decrease" asp-rout-id="@cartItem.ProductId" class="btn btn-sm btn-success">-</a>
-                    <a asp-action="Remove" asp-rout-id="@cartItem.ProductId" class="btn btn-sm btn-danger">Remove</a>
+                    <a asp-action="Add" asp-route-id="@cartItem.ProductId" class="btn btn-sm btn-primary">+</a>
+                    <a asp-action="Decrease" asp-route-id="@cartItem.ProductId" class="btn btn-sm btn-success">-</a>
+                    <a asp-action="Remove" asp-route-id="@cartItem.ProductId" class="btn btn-sm btn-danger">Remove</a>
                 </td>
                 <td>@cartItem.Price.ToString("C2")</td>
                 <td>@Model.CartItems.Where(cart => cart.ProductId == cartItem.ProductId).Sum(cart => cart.Quantity * cart.Price).ToString("C2")</td>
