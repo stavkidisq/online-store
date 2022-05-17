@@ -56,6 +56,7 @@ namespace OnlineStore.Controllers
             return RedirectToAction("Index");
         }
 
+        //GET: cart/decrease/5
         public IActionResult Decrease(int id)
         {
             List<CartItemModel>? cartItemModelList =
@@ -78,10 +79,29 @@ namespace OnlineStore.Controllers
                 cartItemModelList.Remove(cartItemModel);
             }
 
-            HttpContext.Session.SetJson("Cart", cartItemModelList);
+            if (cartItemModelList.Count == 0)
+                HttpContext.Session.Remove("Cart");
+            else
+                HttpContext.Session.SetJson("Cart", cartItemModelList);
+
+            return RedirectToAction("Index");
+        }
+
+        //GET: /cart/remove/5
+        public IActionResult Remove(int id)
+        {
+            List<CartItemModel>? cartItemModelList =
+                HttpContext.Session.GetJson<List<CartItemModel>>("Cart");
+
+            if (cartItemModelList == null)
+                throw new NullReferenceException("cartItemModelList can not be null!");
+
+            cartItemModelList.RemoveAll(cart => cart.ProductId == id);
 
             if (cartItemModelList.Count == 0)
                 HttpContext.Session.Remove("Cart");
+            else
+                HttpContext.Session.SetJson("Cart", cartItemModelList);
 
             return RedirectToAction("Index");
         }
