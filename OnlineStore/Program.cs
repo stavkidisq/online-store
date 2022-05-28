@@ -34,9 +34,8 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
-        "pages",
-        "{slug?}",
-        defaults: new { controller = "Pages", action = "Page" });
+        name: "default",
+        pattern: "{controller=Products}/{action=Index}/{id?}");
 
     endpoints.MapControllerRoute(
         "products",
@@ -44,12 +43,14 @@ app.UseEndpoints(endpoints =>
         defaults: new { controller = "Products", action = "ProductsByCategory" });
 
     endpoints.MapControllerRoute(
+        "pages",
+        "{slug?}",
+        defaults: new { controller = "Pages", action = "Page" });
+
+    endpoints.MapControllerRoute(
         name: "areas",
         pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
 });
 
 using(var scope = app.Services.CreateScope())

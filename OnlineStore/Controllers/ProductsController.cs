@@ -15,7 +15,6 @@ namespace OnlineStore.Controllers
         }
 
         //GET: /products
-        [Route("products/")]
         public async Task<IActionResult> Index(int productPage = 1)
         {
             int pageSize = 6;
@@ -42,7 +41,7 @@ namespace OnlineStore.Controllers
 
             if(categoryBySlug == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Products");
             }
 
             var productsByCategoryId = _context.Products.Where(product => product.CategoryId == categoryBySlug.Id);

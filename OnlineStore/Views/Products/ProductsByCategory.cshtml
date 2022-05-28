@@ -8,7 +8,14 @@
 <div class="row">
     @foreach(var product in Model)
     {
-        <div class="col-4">
+        <div style="position: relative;" class="col-4">
+            <div class="ajaxbg d-none">
+                <img style="height: 50px;" src="~/images/load_circle.gif">
+                <p class="lead alert alert-success text-center d-none">
+                    The product has been added!
+                </p>
+            </div>
+
             <img src="~/media/products/@product.Image" class="img-fluid" alt="">
             <h4>@product.Name</h4>
             <div>
@@ -18,7 +25,7 @@
                 @product.Price.ToString("C2")
             </p>
             <p>
-                <a asp-controller="Cart" asp-action="Add" asp-route-id="@product.Id" class="btn btn-primary">Add to cart</a>
+                <a asp-controller="Cart" asp-action="Add" asp-route-id="@product.Id" data-id="@product.Id" class="btn btn-primary add-to-cart">Add to cart</a>
             </p>
         </div>
     }
@@ -29,5 +36,20 @@
     <div class="d-flex w-100 justify-content-center">
         <Pagination page-count="@ViewBag.ProductPageCount" page-target="/products/@ViewBag.CategorySlug" page-number="@ViewBag.ProductPageNumber" page-range="@ViewBag.ProductPage"></Pagination>
     </div>
-   
+}
+
+@section Scripts{
+    <script>
+        $(function(){
+            $("a.add-to-cart").click(function(event) {
+                event.preventDefault();
+
+                let id = $(this).data("id");
+
+                $.get("../cart/add/" + id, {}, function(data) {
+                    $("div.small-cart").html(data);
+                });
+            });
+        });
+    </script>
 }

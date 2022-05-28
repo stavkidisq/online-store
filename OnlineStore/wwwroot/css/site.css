@@ -34,3 +34,29 @@ a:hover {
 tr:hover {
     background-color: #EEEEEE;
 }
+
+div.ajaxbg{
+    background: rgba(255, 255, 255, .8);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
+div.ajaxbg > img{
+    background: rgba(255, 255, 255, .8);
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform:translateX(-50%);
+    z-index: 2;
+}
+
+div.ajaxbg > p {
+    background: rgba(255, 255, 255, .8);
+    top: 50px;
+    margin: 5px;
+    z-index: 2;
+}

@@ -53,7 +53,13 @@ namespace OnlineStore.Controllers
 
             HttpContext.Session.SetJson("Cart", cartItemModelList);
 
-            return RedirectToAction("Index");
+            //If http request is not AJAX request
+            if (HttpContext.Request.Headers["X-Requested-With"] != "XMLHttpRequest")
+            {
+                return RedirectToAction("Index");
+            }
+
+            return ViewComponent("SmallCart");
         }
 
         //GET: cart/decrease/5
