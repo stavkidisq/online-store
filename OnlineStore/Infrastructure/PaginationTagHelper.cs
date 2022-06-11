@@ -127,12 +127,12 @@ namespace OnlineStore.Infrastructure
 
             if (string.IsNullOrEmpty(PageFirst))
             {
-                PageFirst = "First";
+                PageFirst = "Первая";
             }
 
             if (string.IsNullOrEmpty(PageLast))
             {
-                PageLast = "Last";
+                PageLast = "Последняя";
             }
         }
     }

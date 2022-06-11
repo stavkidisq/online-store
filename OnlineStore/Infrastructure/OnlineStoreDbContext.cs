@@ -5,13 +5,9 @@ namespace OnlineStore.Infrastructure
 {
     public class OnlineStoreDbContext : DbContext
     {
-        public DbSet<PageModel> Pages { get; set; }
-        public DbSet<CategoryModel> Categories { get; set; }
-        public DbSet<ProductModel> Products { get; set; }
-        public OnlineStoreDbContext
-            (DbContextOptions<OnlineStoreDbContext> options) : base(options)
-        {
-
-        }
+        public DbSet<PageModel> Pages { get; set; } = null!;
+        public DbSet<CategoryModel> Categories { get; set; } = null!;
+        public DbSet<ProductModel> Products { get; set; } = null!;
+        public OnlineStoreDbContext(DbContextOptions<OnlineStoreDbContext> options) : base(options) { }
     }
 }

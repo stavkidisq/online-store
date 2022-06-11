@@ -55,7 +55,8 @@ namespace OnlineStore.Controllers
 
             ViewBag.ProductPageCount = (int)Math.Ceiling((decimal)productsByCategoryId.Count() / pageSize);
 
-            return View(await productsByCategoryId.Skip((productPage - 1) * pageSize)
+            return View(await productsByCategoryId
+                        .Skip((productPage - 1) * pageSize)
                         .Take(pageSize)
                         .ToListAsync());
         }

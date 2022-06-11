@@ -1,0 +1,113 @@
+﻿@{
+    decimal productAmount = 0;
+}
+
+<script src="https://pay.yandex.ru/sdk/v1/pay.js" onload="onYaPayLoad()" async></script>
+<script>
+function onYaPayLoad() {
+    var cartArr = [];
+    @foreach(var item in Model)
+    {
+        productAmount += (item.TotalPrice);
+        <text>
+            cartArr.push({
+                label: '@(item.ProductName)',
+                amount: '@(item.TotalPrice.ToString(System.Globalization.CultureInfo.CreateSpecificCulture("en-US")))'
+            });
+         </text>
+    }
+
+    const YaPay = window.YaPay;
+
+    // Сформировать данные платежа.
+    const paymentData = {
+        env: YaPay.PaymentEnv.Sandbox,
+        version: 2,
+        countryCode: YaPay.CountryCode.Ru,
+        currencyCode: YaPay.CurrencyCode.Rub,
+        merchant: {
+            id: 'bbb9c171-2fab-45e6-b1f8-6212980aa9bb',
+            name: 'test-merchant-name',
+            url: 'https://localhost:7275/Index'
+        },
+        order: {
+          id: '1',
+          total: { amount: '@(productAmount.ToString(System.Globalization.CultureInfo.CreateSpecificCulture("en-US")))' },
+          items: cartArr
+        },
+        paymentMethods: [
+          {
+            type: YaPay.PaymentMethodType.Card,
+            gateway: 'test-gateway',
+            gatewayMerchantId: 'test-gateway-merchant-id',
+            allowedAuthMethods: [YaPay.AllowedAuthMethod.PanOnly],
+            allowedCardNetworks: [
+              YaPay.AllowedCardNetwork.Visa,
+              YaPay.AllowedCardNetwork.Mastercard,
+              YaPay.AllowedCardNetwork.Mir,
+              YaPay.AllowedCardNetwork.Maestro,
+              YaPay.AllowedCardNetwork.VisaElectron
+            ]
+          }
+        ],
+        // Опционально (если выполнить шаг 7).
+        requiredFields: {
+          billingContact: { email: true }
+        }
+  };
+
+  // Создать платеж.
+  YaPay.createPayment(paymentData)
+    .then(function (payment) {
+      // Создать экземпляр кнопки.
+      const container = document.querySelector('.ya-pay');
+      const button = payment.createButton({
+        type: YaPay.ButtonType.Pay,
+        theme: YaPay.ButtonTheme.Black,
+        width: YaPay.ButtonWidth.Auto,
+      });
+
+      console.log(container);
+
+      // Смонтировать кнопку в DOM.
+      button.mount(container);
+
+      // Подписаться на событие click.
+      button.on(YaPay.ButtonEventType.Click, function onPaymentButtonClick() {
+        // Запустить оплату после клика на кнопку.
+        payment.checkout();
+      });
+
+      // Подписаться на событие error.
+      payment.on(YaPay.PaymentEventType.Error, function onPaymentError(event) {
+        // Вывести информацию о недоступности оплаты в данный момент
+        // и предложить пользователю другой способ оплаты.
+
+        // Закрыть форму Yandex.Pay.
+        payment.complete(YaPay.CompleteReason.Error);
+      });
+
+      // Подписаться на событие abort.
+      // Это когда пользователь закрыл форму Yandex Pay.
+      payment.on(YaPay.PaymentEventType.Abort, function onPaymentAbort(event) {
+        // Предложить пользователю другой способ оплаты.
+      });
+
+      // Подписаться на событие process.
+      payment.on(YaPay.PaymentEventType.Process, function onPaymentProcess(event) {
+        // Получить платежный токен.
+        alert('Payment token — ' + event.token);
+
+        // Опционально (если выполнить шаг 7).
+        alert('Billing email — ' + event.billingContact.email);
+
+        // Закрыть форму Yandex Pay.
+        payment.complete(YaPay.CompleteReason.Success);
+      });
+    })
+    .catch(function (err) {
+        console.log(err);
+      // Платеж не создан.
+    });
+}
+</script>

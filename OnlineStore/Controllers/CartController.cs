@@ -69,12 +69,12 @@ namespace OnlineStore.Controllers
                 HttpContext.Session.GetJson<List<CartItemModel>>("Cart");
 
             if (cartItemModelList == null)
-                throw new NullReferenceException("cartItemModelList can not be null!");
+                throw new NullReferenceException("Object cartItemModelList can not be null!");
 
             CartItemModel? cartItemModel = cartItemModelList.Where(cart => cart.ProductId == id).FirstOrDefault();
 
             if (cartItemModel == null)
-                throw new NullReferenceException("cartItemModel can not be null!");
+                throw new NullReferenceException("Object cartItemModel can not be null!");
 
             if(cartItemModel.Quantity > 1)
             {
@@ -100,7 +100,7 @@ namespace OnlineStore.Controllers
                 HttpContext.Session.GetJson<List<CartItemModel>>("Cart");
 
             if (cartItemModelList == null)
-                throw new NullReferenceException("cartItemModelList can not be null!");
+                throw new NullReferenceException("Object cartItemModelList can not be null!");
 
             cartItemModelList.RemoveAll(cart => cart.ProductId == id);
 
@@ -117,7 +117,7 @@ namespace OnlineStore.Controllers
         {
             HttpContext.Session.Remove("Cart");
 
-            return RedirectToAction("Index");
+            return Redirect(Request.Headers["Referer"].ToString());
         }
     }
 }

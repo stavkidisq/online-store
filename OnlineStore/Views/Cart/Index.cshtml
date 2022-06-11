@@ -10,11 +10,11 @@
 
     <table class="table">
         <tr>
-            <th>Product</th>
-            <th>Quantity</th>
+            <th>Продукт</th>
+            <th>Количество</th>
             <th></th>
-            <th>Price</th>
-            <th>Total</th>
+            <th>Цена за единицу</th>
+            <th>Общая цена</th>
         </tr>
         @foreach(var cartItem in Model.CartItems)
         {
@@ -45,3 +45,9 @@ else
 {
     <h3 class="display-4 text-center">Your cart is empty.</h3>
 }
+
+<div class="ya-pay">
+
+</div>
+
+<partial name="~/Views/Cart/_YandexPayPartial.cshtml" for="CartItems"></partial>

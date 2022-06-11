@@ -11,6 +11,9 @@
         <div style="position: relative;" class="col-4">
             <div class="ajaxbg d-none">
                 <img style="height: 50px;" src="~/images/load_circle.gif">
+                <p class="lead alert alert-success text-center d-none">
+                    Товар был добавлен!
+                </p>
             </div>
 
             <img src="~/media/products/@product.Image" class="img-fluid" alt="">
@@ -48,11 +51,13 @@
                 $.get("../cart/add/" + id, {}, function(data) {
                     $("div.small-cart").html(data);
                     ajaxDiv.find("img").addClass("d-none");
+                    ajaxDiv.find("p").removeClass("d-none");
 
                     setTimeout(() => {
                         ajaxDiv.animate({ opacity: 0 }, function () {
                             $(this).addClass("d-none").fadeTo(.1, 1);
                             $(this).find("img").removeClass("d-none");
+                            $(this).find("p").addClass("d-none");
                         });
                     });
                 });
