@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/OnlineStore/wwwroot/media/products/34694d2e-f65a-459b-ad5f-3967328aeeec_apples.png
+/OnlineStore/wwwroot/media/products/3e4e610f-e9da-48e2-9c06-f9b76f131fe5_apples.png
+/OnlineStore/wwwroot/media/products/f8173641-018b-4bbc-a65e-31ae95f9451f_apples.png

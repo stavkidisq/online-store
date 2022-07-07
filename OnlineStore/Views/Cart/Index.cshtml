@@ -36,7 +36,7 @@
         <tr>
             <td style="text-align: right;" colspan="4">
                 <a asp-action="Clear" class="btn btn-danger">Clear cart</a>
-                <a href="#" class="btn btn-primary">Checkout</a>
+                <a href="#" class="btn btn-primary checkout">Checkout</a>
             </td>
         </tr>
     </table>
@@ -46,8 +46,9 @@ else
     <h3 class="display-4 text-center">Your cart is empty.</h3>
 }
 
-<div class="ya-pay">
-
-</div>
+@if(@Model.CartItems.Count > 0)
+{
+    <div class="ya-pay"></div>
+}
 
 <partial name="~/Views/Cart/_YandexPayPartial.cshtml" for="CartItems"></partial>

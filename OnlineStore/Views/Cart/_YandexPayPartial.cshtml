@@ -103,6 +103,13 @@ function onYaPayLoad() {
 
         // Закрыть форму Yandex Pay.
         payment.complete(YaPay.CompleteReason.Success);
+
+        $(function(){
+            $.get("/cart/clear", {}, function() 
+            {
+                window.location.reload();
+            });
+        });
       });
     })
     .catch(function (err) {
