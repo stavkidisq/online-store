@@ -6,9 +6,11 @@ namespace OnlineStore.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        public string Index()
+        //GET: /account/register
+        [AllowAnonymous]
+        public IActionResult Register()
         {
-            return "Hello!";
+            return View();
         }
     }
 }
