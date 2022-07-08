@@ -34,6 +34,10 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
+        name: "areas",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+    endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Products}/{action=Index}/{id?}");
 
@@ -46,11 +50,6 @@ app.UseEndpoints(endpoints =>
         "pages",
         "{slug?}",
         defaults: new { controller = "Pages", action = "Page" });
-
-    endpoints.MapControllerRoute(
-        name: "areas",
-        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
 });
 
 using(var scope = app.Services.CreateScope())

@@ -14,6 +14,7 @@ namespace OnlineStore.Areas.Admin.Controllers
         {
             _context = context;
         }
+
         //GET: admin/categories
         public async Task<IActionResult> Index()
         {
