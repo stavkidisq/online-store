@@ -14,6 +14,7 @@ namespace OnlineStore.Controllers
         {
             _userManager = userManager;
         }
+
         //GET: /account/register
         [AllowAnonymous]
         public IActionResult Register()
@@ -25,7 +26,7 @@ namespace OnlineStore.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(UserModel userModel)
+        public async Task<IActionResult> Register(UserAuthorizeModel userModel)
         {
             if(ModelState.IsValid)
             {
