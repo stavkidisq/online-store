@@ -53,5 +53,17 @@ namespace OnlineStore.Controllers
 
             return View(userModel);
         }
-    }
+
+        //GET: /account/login
+        [AllowAnonymous]
+        public IActionResult Login(string returnUrl)
+        {
+            UserAuthenticateModel urlTo = new UserAuthenticateModel()
+            {
+                ReturnUrl = returnUrl
+            };
+
+            return View();
+        }
+    } 
 }
