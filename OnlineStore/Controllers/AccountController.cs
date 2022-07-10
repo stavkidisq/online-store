@@ -101,5 +101,13 @@ namespace OnlineStore.Controllers
 
             return View(userModel);
         }
+
+        //GET: /account/logout
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+
+            return Redirect("/");
+        }
     } 
 }
