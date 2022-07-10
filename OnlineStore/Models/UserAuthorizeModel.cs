@@ -10,14 +10,5 @@ namespace OnlineStore.Models
         public string Email { get; set; } = null!;
         [Required, DataType(DataType.Password), MinLength(6, ErrorMessage = "Minimum length is 6")]
         public string Password { get; set; } = null!;
-
-        public UserAuthorizeModel() { }
-
-        public UserAuthorizeModel(AppUserModel appUserModel) 
-        {
-            UserName = appUserModel.UserName;
-            Email = appUserModel.Email;
-            Password = appUserModel.PasswordHash;
-        }
     }
 }
