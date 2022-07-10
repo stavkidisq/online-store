@@ -109,5 +109,14 @@ namespace OnlineStore.Controllers
 
             return Redirect("/");
         }
+
+        //GET: /account/edit
+        public async Task<IActionResult> Edit()
+        {
+            AppUserModel appUserModel = await _userManager.FindByNameAsync(User?.Identity?.Name);
+            UserAuthorizeModel userAuthorizeModel = new UserAuthorizeModel(appUserModel);
+
+            return View(userAuthorizeModel);
+        }
     } 
 }
