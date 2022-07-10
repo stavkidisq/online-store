@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Infrastructure;
 using OnlineStore.Models;
 
 namespace OnlineStore.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly OnlineStoreDbContext _context;

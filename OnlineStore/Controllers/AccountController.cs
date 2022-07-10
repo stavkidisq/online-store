@@ -9,10 +9,12 @@ namespace OnlineStore.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<AppUserModel> _userManager;
+        private readonly SignInManager<AppUserModel> _signInManager;
 
-        public AccountController(UserManager<AppUserModel> userManager)
+        public AccountController(UserManager<AppUserModel> userManager, SignInManager<AppUserModel> signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         //GET: /account/register
@@ -56,14 +58,48 @@ namespace OnlineStore.Controllers
 
         //GET: /account/login
         [AllowAnonymous]
-        public IActionResult Login(string returnUrl)
+        public IActionResult Login(string? returnUrl = null)
         {
             UserAuthenticateModel urlTo = new UserAuthenticateModel()
             {
                 ReturnUrl = returnUrl
             };
 
-            return View();
+            return View(urlTo);
+        }
+
+        //POST: /account/login
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(UserAuthenticateModel userModel)
+        {
+            if (ModelState.IsValid)
+            {
+                AppUserModel appUser = await _userManager.FindByEmailAsync(userModel.Email);
+
+                if(appUser != null)
+                {
+                    Microsoft.AspNetCore.Identity.SignInResult result = 
+                        await _signInManager.PasswordSignInAsync(appUser, userModel.Password, false, false);
+
+                    if(result.Succeeded)
+                    {
+                        if (!string.IsNullOrEmpty(userModel.ReturnUrl) && Url.IsLocalUrl(userModel.ReturnUrl))
+                        {
+                            return Redirect(userModel.ReturnUrl);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Products");
+                        }
+                    }
+
+                    ModelState.AddModelError(string.Empty, "Login failed, wrong credentials!");
+                }
+            }
+
+            return View(userModel);
         }
     } 
 }
