@@ -10,11 +10,13 @@ namespace OnlineStore.Controllers
     {
         private readonly UserManager<AppUserModel> _userManager;
         private readonly SignInManager<AppUserModel> _signInManager;
+        private IPasswordHasher<AppUserModel> _passwordHasher;
 
-        public AccountController(UserManager<AppUserModel> userManager, SignInManager<AppUserModel> signInManager)
+        public AccountController(UserManager<AppUserModel> userManager, SignInManager<AppUserModel> signInManager, IPasswordHasher<AppUserModel> passwordHasher)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _passwordHasher = passwordHasher;
         }
 
         //GET: /account/register
@@ -117,6 +119,34 @@ namespace OnlineStore.Controllers
             UserEditModel userAuthorizeModel = new UserEditModel(appUserModel);
 
             return View(userAuthorizeModel);
+        }
+
+        //POST: /account/edit
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(UserEditModel userModel)
+        {
+            AppUserModel appUser = await _userManager.FindByNameAsync(User?.Identity?.Name);
+
+            if (ModelState.IsValid)
+            {
+                appUser.Email = userModel.Email;
+
+                if(userModel.Password != null)
+                {
+                    appUser.PasswordHash = _passwordHasher.HashPassword(appUser, userModel.Password);
+                }
+
+                IdentityResult result = await _userManager.UpdateAsync(appUser);
+
+                if(result.Succeeded)
+                {
+                    TempData["Success"] = "Your information has been updated";
+                }
+            }
+
+            return View();
         }
     } 
 }
