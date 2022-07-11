@@ -80,25 +80,21 @@ namespace OnlineStore.Controllers
             {
                 AppUserModel appUser = await _userManager.FindByEmailAsync(userModel.Email);
 
-                if(appUser != null)
+                var result = await _signInManager.PasswordSignInAsync(appUser.UserName, userModel.Password, false, false);
+
+                if (result.Succeeded)
                 {
-                    Microsoft.AspNetCore.Identity.SignInResult result = 
-                        await _signInManager.PasswordSignInAsync(appUser, userModel.Password, false, false);
-
-                    if(result.Succeeded)
+                    if (!string.IsNullOrEmpty(userModel.ReturnUrl) && Url.IsLocalUrl(userModel.ReturnUrl))
                     {
-                        if (!string.IsNullOrEmpty(userModel.ReturnUrl) && Url.IsLocalUrl(userModel.ReturnUrl))
-                        {
-                            return Redirect(userModel.ReturnUrl);
-                        }
-                        else
-                        {
-                            return RedirectToAction("Index", "Products");
-                        }
+                        return Redirect(userModel.ReturnUrl);
                     }
-
-                    ModelState.AddModelError(string.Empty, "Login failed, wrong credentials!");
+                    else
+                    {
+                        return RedirectToAction("Index", "Products");
+                    }
                 }
+
+                ModelState.AddModelError(string.Empty, "Login failed, wrong credentials!");
             }
 
             return View(userModel);

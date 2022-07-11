@@ -13,9 +13,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<OnlineStoreDbContext>
     (options => options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineStoreDbContext")));
 
-builder.Services.AddIdentity<AppUserModel, IdentityRole>()
-    .AddEntityFrameworkStores<OnlineStoreDbContext>()
-    .AddDefaultTokenProviders();
+builder.Services.AddIdentity<AppUserModel, IdentityRole>(options => options.User.RequireUniqueEmail = true)
+    .AddEntityFrameworkStores<OnlineStoreDbContext>().AddDefaultTokenProviders();
 
 var app = builder.Build();
 
