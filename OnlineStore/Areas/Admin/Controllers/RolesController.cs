@@ -15,10 +15,16 @@ namespace OnlineStore.Areas.Admin.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
         }
-
+        //GET: /admin/roles
         public IActionResult Index()
         {
             return View(_roleManager.Roles);
+        }
+
+        //GET: /admin/roles/create
+        public IActionResult Create()
+        {
+            return View();
         }
     }
 }
