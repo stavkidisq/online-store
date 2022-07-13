@@ -75,5 +75,27 @@ namespace OnlineStore.Areas.Admin.Controllers
 
             return View(new RoleEditModel() { Role = role, Members = members, NonMembers = nonMembers });
         }
+
+        //POST: /admin/roles/edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(RoleEditModel roleEditModel)
+        {
+            IdentityResult result;
+
+            foreach(var userId in roleEditModel.AddIds ?? new string[] { })
+            {
+                AppUserModel userModel = await _userManager.FindByIdAsync(userId);
+                result = await _userManager.AddToRoleAsync(userModel, roleEditModel.RoleName);
+            }
+
+            foreach (var userId in roleEditModel.DeleteIds ?? new string[] { })
+            {
+                AppUserModel userModel = await _userManager.FindByIdAsync(userId);
+                result = await _userManager.RemoveFromRoleAsync(userModel, roleEditModel.RoleName);
+            }
+
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
     }
 }
