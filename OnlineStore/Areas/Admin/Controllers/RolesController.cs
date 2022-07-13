@@ -58,5 +58,22 @@ namespace OnlineStore.Areas.Admin.Controllers
 
             return View();
         }
+
+        //GET: /admin/roles/edit
+        public async Task<IActionResult> Edit(string id)
+        {
+            var role = await _roleManager.FindByIdAsync(id);
+
+            List<AppUserModel> members = new List<AppUserModel>();
+            List<AppUserModel> nonMembers = new List<AppUserModel>();
+
+            foreach(var user in _userManager.Users)
+            {
+                var usersList = await _userManager.IsInRoleAsync(user, role.Name) ? members : nonMembers;
+                usersList.Add(user);
+            }
+
+            return View(new RoleEditModel() { Role = role, Members = members, NonMembers = nonMembers });
+        }
     }
 }
