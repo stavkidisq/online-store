@@ -22,7 +22,7 @@
         <tr>
             <td>@role.Id</td>
             <td>@role.Name</td>
-            <td>Users for this role</td>
+            <td user-role="@role.Id"></td>
             <td>
                 <a asp-action="Edit" asp-route-id="@role.Id">Edit</a>
                 <a class="confirm-deletion" asp-action="Delete" asp-route-id="@role.Id">Delete</a>

@@ -16,6 +16,7 @@ namespace OnlineStore.Areas.Admin.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
         }
+
         //GET: /admin/roles
         public IActionResult Index()
         {
