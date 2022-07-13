@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineStore.Areas.Admin.Controllers
 {
@@ -24,6 +25,37 @@ namespace OnlineStore.Areas.Admin.Controllers
         //GET: /admin/roles/create
         public IActionResult Create()
         {
+            return View();
+        }
+
+        //POST: /admin/roles/create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Required, MinLength(4)] string name)
+        {
+            if(ModelState.IsValid)
+            {
+                var result = await _roleManager.CreateAsync(new IdentityRole(name));
+
+                if(result.Succeeded)
+                {
+                    TempData["Success"] = "The role has been created!";
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    foreach(var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Minimal length is 4!");
+            }
+
             return View();
         }
     }
